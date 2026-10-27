@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Guest Invitation Links</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+  /* Layout: one narrow column — names in, a list of personal links out */
+  :root {
+    --ivory: #FBF6EC; --parchment: #F3E9D4; --navy: #1E2A4A; --maroon: #7A1F2B; --gold: #B48A3C; --ink: #5B4E44; --green: #1F7A4D;
+    --f-display: 'Cinzel', Georgia, serif; --f-body: 'EB Garamond', Georgia, serif;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ivory); color: var(--navy); font-family: var(--f-body); font-size: 18px; line-height: 1.5;
+    padding: max(24px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 48px max(16px, env(safe-area-inset-left, 0px)); }
+  main { max-width: 640px; margin: 0 auto; display: grid; gap: 20px; }
+  h1 { font-family: var(--f-display); font-weight: 600; font-size: 1.6rem; margin: 0; text-wrap: balance; }
+  .eyebrow { font-family: var(--f-display); font-size: .7rem; letter-spacing: .24em; text-transform: uppercase; color: var(--gold); margin: 0; }
+  p { margin: 0; }
+  .card { background: var(--parchment); border: 1px solid var(--gold); padding: 18px; display: grid; gap: 12px; }
+  label { font-family: var(--f-display); font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; }
+  textarea, input { width: 100%; font: inherit; color: var(--navy); background: var(--ivory); border: 1px solid rgba(180,138,60,.7); padding: 10px 12px; border-radius: 2px; }
+  textarea { min-height: 150px; resize: vertical; }
+  textarea:focus, input:focus { outline: 2px solid var(--maroon); outline-offset: 1px; }
+  .btn { font-family: var(--f-display); font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; border: 1px solid var(--maroon); background: var(--ivory);
+    color: var(--maroon); padding: 10px 14px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; }
+  .btn.primary { background: var(--maroon); color: #F6E7C8; }
+  .btn.wa { background: var(--green); border-color: var(--green); color: #fff; }
+  .btn:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+  ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  li { background: #fff; border: 1px solid rgba(180,138,60,.5); padding: 14px; display: grid; gap: 8px; min-width: 0; }
+  .name { font-family: var(--f-display); font-size: 1.05rem; }
+  .url { font-size: .85rem; color: var(--ink); word-break: break-all; user-select: all; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .hint { color: var(--ink); font-size: 1rem; }
+  .empty { color: var(--ink); font-style: italic; text-align: center; padding: 20px; border: 1px dashed rgba(180,138,60,.6); }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">Griva &amp; Himanshu · for the family only</p>
+    <h1>Guest invitation links</h1>
+    <p class="hint" style="margin-top:6px">Type one guest per line. Each guest gets a link that opens the invitation with their name on it.</p>
+  </header>
+
+  <section class="card">
+    <label for="names">Guest names</label>
+    <textarea id="names" placeholder="Ramesh Patel &amp; Family&#10;Priya Shah&#10;Mehta Family"></textarea>
+    <label for="message">WhatsApp message <span style="text-transform:none;letter-spacing:0;font-family:var(--f-body)">({name} and {link} are filled in)</span></label>
+    <textarea id="message" style="min-height:110px"></textarea>
+    <div class="row"><button class="btn primary" id="make" type="button">Make links</button><button class="btn" id="copy-all" type="button">Copy all links</button></div>
+    <p class="hint" id="status" role="status"></p>
+  </section>
+
+  <ol id="list"></ol>
+  <p class="empty" id="empty">Your guest links will appear here.</p>
+</main>
+<script>
+  const BASE = 'https://himanshupatel1512.github.io/Wedding-Bride/';
+  const DEFAULT_MSG = 'Namaste {name},\n\nWith great joy, Suryakant Haribhai Patel & Dinesh Suryakant Patel invite you to the wedding of Griva & Himanshu, 20–24 January 2027, Anand, Gujarat.\n\nOpen your invitation: {link}';
+  const $ = s => document.querySelector(s);
+  const names = $('#names'), msg = $('#message'), list = $('#list');
+  const save = (k, v) => { try { localStorage.setItem(k, v); } catch (_) {} };
+  const load = k => { try { return localStorage.getItem(k); } catch (_) { return null; } };
+  names.value = load('guest-names') || '';
+  msg.value = load('guest-msg') || DEFAULT_MSG;
+  const linkFor = n => BASE + '?to=' + encodeURIComponent(n).replace(/%20/g, '+');
+  let links = [];
+
+  function legacyCopy(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.focus(); ta.select(); ta.setSelectionRange(0, text.length);
+    let ok = false; try { ok = document.execCommand('copy'); } catch (_) {}
+    ta.remove(); return ok;
+  }
+  async function copy(text, done) {
+    try { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); done('Copied'); return; } } catch (_) {}
+    done(legacyCopy(text) ? 'Copied' : 'Press and hold the link to copy');
+  }
+  function render() {
+    const people = [...new Set(names.value.split('\n').map(s => s.replace(/\s+/g, ' ').trim()).filter(Boolean))];
+    save('guest-names', names.value); save('guest-msg', msg.value);
+    links = people.map(n => ({ n, url: linkFor(n) }));
+    list.innerHTML = '';
+    $('#empty').hidden = links.length > 0;
+    links.forEach(({ n, url }) => {
+      const li = document.createElement('li');
+      const text = msg.value.split('{name}').join(n).split('{link}').join(url);
+      li.innerHTML = `<span class="name"></span><span class="url"></span>
+        <div class="row"><a class="btn wa" target="_blank" rel="noopener">Send on WhatsApp</a><button class="btn copy" type="button">Copy link</button><button class="btn share" type="button" hidden>Share…</button><a class="btn pv" target="_blank" rel="noopener">Preview</a></div>`;
+      li.querySelector('.name').textContent = n;
+      li.querySelector('.url').textContent = url;
+      li.querySelector('a.wa').href = 'https://wa.me/?text=' + encodeURIComponent(text);
+      li.querySelector('a.pv').href = url;
+      const sh = li.querySelector('button.share');
+      if (navigator.share) { sh.hidden = false; sh.addEventListener('click', () => navigator.share({ text }).catch(() => {})); }
+      const cb = li.querySelector('button.copy');
+      cb.addEventListener('click', () => copy(url, t => { cb.textContent = t; setTimeout(() => cb.textContent = 'Copy link', 1800); }));
+      list.appendChild(li);
+    });
+    $('#status').textContent = links.length ? `${links.length} link${links.length > 1 ? 's' : ''} ready.` : 'Add at least one name first.';
+  }
+  $('#make').addEventListener('click', render);
+  $('#copy-all').addEventListener('click', () => {
+    if (!links.length) render();
+    copy(links.map(l => `${l.n}: ${l.url}`).join('\n'), t => $('#status').textContent = t === 'Copied' ? 'All links copied.' : t);
+  });
+  if (names.value.trim()) render();
+</script>
+</body>
+</html>
