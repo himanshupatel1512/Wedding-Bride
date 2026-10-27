@@ -142,18 +142,11 @@
   .env-back { background: var(--maroon-deep); border-radius: 4px; }
   .env-card { position: absolute; left: 6%; right: 6%; top: 6%; height: 88%; background: var(--ivory); border: 1px solid var(--gold); outline: 1px solid rgba(180,138,60,.5); outline-offset: -6px; z-index: 2;
     display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 9%; text-align: center; transition: transform 1s cubic-bezier(.2,.8,.2,1) .1s; }
-  .env-front { z-index: 3; background: linear-gradient(160deg, #B5236E, var(--maroon) 60%, #84154D); clip-path: polygon(0 0, 50% 54%, 100% 0, 100% 100%, 0 100%); border-radius: 4px;
-    box-shadow: inset 0 0 0 1px rgba(217,184,106,.5); }
-  .env-front::after { content: ""; position: absolute; inset: 7px; border: 1px solid rgba(217,184,106,.45); clip-path: inherit; }
-  .env-flap { z-index: 4; height: 62%; background: linear-gradient(180deg, #B8286F, #9A185A); clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: top center; transition: transform .9s cubic-bezier(.4,.1,.3,1); backface-visibility: hidden; }
   .seal { position: absolute; z-index: 5; left: 50%; top: 62%; width: 64px; height: 64px; transform: translate(-50%, -50%); border-radius: 50%; border: none; cursor: pointer;
     background: radial-gradient(circle at 35% 30%, #F0D58F, var(--gold) 55%, #8C6420); box-shadow: 0 6px 18px rgba(0,0,0,.45), inset 0 0 0 4px rgba(140,100,32,.6), inset 0 0 0 6px rgba(240,213,143,.5);
     font-family: var(--f-display); font-weight: 700; color: var(--maroon-deep); font-size: 1.15rem; letter-spacing: .06em; transition: transform .45s ease, opacity .45s ease; animation: pulse 2.4s ease-in-out infinite; }
   @keyframes pulse { 50% { box-shadow: 0 6px 28px rgba(217,184,106,.65), inset 0 0 0 4px rgba(140,100,32,.6), inset 0 0 0 6px rgba(240,213,143,.5); } }
   .env.open .seal { transform: translate(-50%, -50%) scale(.2); opacity: 0; animation: none; }
-  .env.open .env-flap { transform: rotateX(180deg); }
-  .env.lift .env-flap { z-index: 1; }
-  .env.lift .env-card { transform: translateY(-46%); }
   .env-hint { font-family: var(--f-display); letter-spacing: .3em; text-transform: uppercase; font-size: .72rem; color: var(--gold-light); }
   .skip { font-family: var(--f-body); font-style: italic; color: #C9C1B3; text-decoration: underline; text-underline-offset: 3px; background: none; border: 0; cursor: pointer; font-size: 1rem; }
 
@@ -380,6 +373,56 @@
 
   #fx { position: fixed; inset: 0; pointer-events: none; z-index: 55; }
 
+  /* Bride side: carved temple doors instead of the envelope */
+  .env { width: min(54vw, 240px); aspect-ratio: 1 / 1.14; perspective: 1100px; margin-top: 22px; }
+  .env-crest { position: absolute; z-index: 6; left: 50%; top: -24px; width: 54px; height: 27px; transform: translateX(-50%); color: var(--gold-light); filter: drop-shadow(0 0 8px rgba(240,213,143,.6)); }
+  .env-back { border-radius: 50% 50% 4px 4px / 34% 34% 4px 4px; background: radial-gradient(ellipse at 50% 58%, #FFF1C9 0%, #E9C36F 45%, #8C6420 100%);
+    box-shadow: 0 0 0 3px var(--gold-light), 0 0 0 7px var(--maroon-deep), 0 0 0 8px var(--gold), 0 24px 44px -14px rgba(0,0,0,.65); transition: box-shadow 1.4s ease; }
+  .env.open .env-back { box-shadow: 0 0 0 3px var(--gold-light), 0 0 0 7px var(--maroon-deep), 0 0 0 8px var(--gold), 0 0 70px 16px rgba(255,214,130,.55); }
+  .env-card { left: 9%; right: 9%; top: 9%; height: auto; bottom: 6%; border-radius: 50% 50% 3px 3px / 30% 30% 3px 3px; padding: 18% 6% 0; transform: scale(.94); transition: transform 1.3s cubic-bezier(.2,.8,.2,1); }
+  .env-card .font-script { font-size: clamp(1.35rem, 6.4vw, 1.9rem); }
+  .env.lift .env-card { transform: scale(1.05); }
+  .door { position: absolute; top: 0; bottom: 0; width: 50%; z-index: 4; transition: transform 1.4s cubic-bezier(.55,.05,.25,1);
+    background: radial-gradient(circle, rgba(240,213,143,.5) 0 1px, transparent 1.6px) 0 0 / 11px 11px, linear-gradient(165deg, #B5236E, var(--maroon) 55%, #84154D);
+    box-shadow: inset 0 0 0 2px var(--gold-light), inset 0 0 0 6px #84154D, inset 0 0 0 7px rgba(217,184,106,.75); }
+  .door::before, .door::after { content: ""; position: absolute; left: 20%; right: 20%; border: 1px solid rgba(217,184,106,.8); box-shadow: inset 0 0 0 3px rgba(110,15,64,.35); }
+  .door::before { top: 30%; height: 30%; border-radius: 50% 50% 2px 2px / 28% 28% 2px 2px; }
+  .door::after { top: 66%; bottom: 9%; border-radius: 2px; }
+  .door-l { left: 0; transform-origin: left center; border-radius: 100% 0 0 4px / 34% 0 0 4px; }
+  .door-r { right: 0; transform-origin: right center; border-radius: 0 100% 4px 0 / 0 34% 4px 0; }
+  .door-l { box-shadow: inset 0 0 0 2px var(--gold-light), inset 0 0 0 6px #84154D, inset 0 0 0 7px rgba(217,184,106,.75), inset -6px 0 10px -4px rgba(0,0,0,.45); }
+  .env.open .door-l { transform: rotateY(-108deg); }
+  .env.open .door-r { transform: rotateY(108deg); }
+  .seal { top: 56%; transition: transform .7s ease, opacity .6s ease; }
+  .env.open .seal { transform: translate(-50%, -50%) rotate(200deg) scale(.15); }
+  .env-to { z-index: 5; bottom: 3%; transition: opacity .5s ease; }
+  .env.open .env-to { opacity: 0; }
+  @media (max-height: 700px) { .env { width: min(46vw, 210px); } }
+  @media (max-height: 480px) { .env { width: 98px; margin-top: 14px; } .env-crest { top: -18px; width: 40px; height: 20px; } .env-card .font-script { font-size: .8rem; } .env-card .font-deva { display: none; } .env-card svg { width: 1.6rem; height: 1.6rem; } .env-to { display: none; } .seal { width: 46px; height: 46px; font-size: .85rem; } }
+
+  /* Bride side film: scenes open through a widening circle, petals fall, a rangoli turns behind */
+  .mandala { position: absolute; left: 50%; top: 46%; width: min(135vmin, 960px); aspect-ratio: 1; transform: translate(-50%, -50%); color: rgba(217,184,106,.55); pointer-events: none; opacity: 0;
+    transition: opacity 3s ease; animation: spin 120s linear infinite; -webkit-mask: radial-gradient(circle, #000 25%, transparent 70%); mask: radial-gradient(circle, #000 25%, transparent 70%); }
+  .mandala svg { width: 100%; height: 100%; display: block; }
+  #film.rolling .mandala { opacity: .5; }
+  #film.temple .mandala { opacity: .15; }
+  .shot { opacity: 0; transform: translateY(22px); clip-path: circle(0% at 50% 46%);
+    transition: clip-path 1.8s cubic-bezier(.3,.6,.2,1), opacity .9s ease, transform 2.4s cubic-bezier(.2,.7,.2,1); }
+  .shot.in { opacity: 1; transform: none; clip-path: circle(80% at 50% 46%); }
+  .shot.out { opacity: 0; transform: translateY(-26px); clip-path: circle(80% at 50% 46%); transition: opacity .9s ease, transform 1.1s ease; }
+  #film .shot, #film .shot.in { filter: drop-shadow(0 2px 12px rgba(0,0,0,.6)); }
+  .names-shot span { filter: none; transition: opacity 1.4s ease, transform 2s cubic-bezier(.2,.7,.2,1), letter-spacing 2.4s ease; }
+  .names-shot .n1 { transform: translateY(-36px); }
+  .names-shot .n2 { transform: translateY(36px); }
+  .names-shot .w { transform: scale(.6); letter-spacing: .1em; }
+  .names-shot.in .w { letter-spacing: .34em; }
+
+  /* Bride side event drawings: rise and float when the card is in view */
+  .ev-prop { right: -4px; bottom: -6px; transform-origin: 50% 100%; }
+  .event.ev-live .ev-prop { transform: translateY(-6px) scale(1.08); animation: bob 3s ease-in-out .7s infinite; }
+  @media (hover: hover) { .event:hover .ev-prop { transform: translateY(-6px) scale(1.08); } }
+  @keyframes bob { 0%, 100% { transform: translateY(-6px) scale(1.08) rotate(0); } 50% { transform: translateY(-13px) scale(1.1) rotate(2deg); } }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
     html { scroll-behavior: auto; }
@@ -502,6 +545,60 @@
       <path class="pf-swastik" d="M60 82 V98 M52 90 H68 M60 82 H66 M68 90 V96 M60 98 H54 M52 90 V84" stroke-width="2"/>
       <circle cx="56" cy="86" r="1" class="pf-dark"/><circle cx="64" cy="86" r="1" class="pf-dark"/><circle cx="56" cy="94" r="1" class="pf-dark"/><circle cx="64" cy="94" r="1" class="pf-dark"/>
     </symbol>
+    <!-- Bride side drawings: garbo, mehndi hand, haldi thali, chori -->
+    <symbol id="prop-garbo" viewBox="0 0 120 120">
+      <path d="M12 42 L50 12" style="fill:none;stroke:#C2185B" stroke-width="4" stroke-linecap="round"/>
+      <path d="M12 42 L50 12" style="fill:none;stroke:#F2C14E" stroke-width="4" stroke-dasharray="3 6"/>
+      <path d="M16 12 L54 40" style="fill:none;stroke:#2E8B57" stroke-width="4" stroke-linecap="round"/>
+      <path d="M16 12 L54 40" style="fill:none;stroke:#F2C14E" stroke-width="4" stroke-dasharray="3 6"/>
+      <path d="M52 44 H80 L78 50 C96 56 104 72 102 86 C100 102 86 110 66 110 C46 110 32 102 30 86 C28 72 36 56 54 50 Z" style="fill:#D9733F;stroke:#8C3B1C" stroke-width="1.4"/>
+      <path d="M33 72 Q66 82 99 72" style="fill:none;stroke:#A0195E" stroke-width="5"/>
+      <path d="M32 92 Q66 101 100 92" style="fill:none;stroke:#2E8B57" stroke-width="3"/>
+      <g style="fill:#FFF6E0;stroke:none"><circle cx="40" cy="74.5" r="1.1"/><circle cx="53" cy="77.5" r="1.1"/><circle cx="66" cy="78.5" r="1.1"/><circle cx="79" cy="77.5" r="1.1"/><circle cx="92" cy="74.5" r="1.1"/></g>
+      <g style="fill:#FFD66B;stroke:#C98A00" stroke-width=".6"><circle cx="52" cy="62" r="3.4"/><circle cx="66" cy="60" r="3.4"/><circle cx="80" cy="62" r="3.4"/><circle cx="44" cy="84" r="3"/><circle cx="58" cy="86" r="3"/><circle cx="74" cy="86" r="3"/><circle cx="88" cy="84" r="3"/><circle cx="56" cy="102" r="2.6"/><circle cx="76" cy="102" r="2.6"/></g>
+      <ellipse cx="66" cy="44" rx="16" ry="4" style="fill:#F2C14E;stroke:#8C3B1C" stroke-width="1.2"/>
+      <path d="M66 42 C60 35 62 27 66 20 C70 27 72 35 66 42Z" style="fill:#F28C28;stroke:#C0391B" stroke-width="1.2"/>
+      <path d="M66 40 C64 36 65 32 66 29 C67 32 68 36 66 40Z" style="fill:#FFE27A;stroke:none"/>
+    </symbol>
+    <symbol id="prop-hena" viewBox="0 0 120 120">
+      <g style="fill:#EFC39A;stroke:#B97A4E" stroke-width="1.2">
+        <path d="M44 80 C38 73 32 66 27 61 C23 56 30 50 35 54 C41 59 47 66 50 70 Z"/>
+        <rect x="42" y="27" width="9.5" height="40" rx="4.75"/><rect x="53" y="20" width="10" height="46" rx="5"/>
+        <rect x="64.5" y="24" width="9.5" height="42" rx="4.75"/><rect x="75.5" y="34" width="8.5" height="34" rx="4.25"/>
+        <path d="M42 58 H84 C86 72 85 88 80 97 L78 118 H48 L46 101 C40 92 40 72 42 58Z"/>
+      </g>
+      <g style="fill:#8E3B1F;stroke:none">
+        <path d="M42 31.75 a4.75 4.75 0 0 1 9.5 0 v3 h-9.5z"/><path d="M53 25 a5 5 0 0 1 10 0 v3 h-10z"/>
+        <path d="M64.5 28.75 a4.75 4.75 0 0 1 9.5 0 v3 h-9.5z"/><path d="M75.5 38.25 a4.25 4.25 0 0 1 8.5 0 v3 h-8.5z"/>
+        <circle cx="62" cy="80" r="4"/>
+        <circle cx="62" cy="67" r="1.4"/><circle cx="71.2" cy="70.8" r="1.4"/><circle cx="75" cy="80" r="1.4"/><circle cx="71.2" cy="89.2" r="1.4"/><circle cx="62" cy="93" r="1.4"/><circle cx="52.8" cy="89.2" r="1.4"/><circle cx="49" cy="80" r="1.4"/><circle cx="52.8" cy="70.8" r="1.4"/>
+      </g>
+      <g style="fill:none;stroke:#8E3B1F" stroke-width="1.3" stroke-linecap="round">
+        <circle cx="62" cy="80" r="9"/>
+        <path d="M44 46 H50 M55 42 H61 M66.5 44 H72 M77 52 H82.5"/>
+        <path d="M45 52 C47 50 49 50 50 52 M56 50 C58 48 60 48 61 50 M67 51 C69 49 71 49 72 51"/>
+        <path d="M48 106 H78 M48 111 H78" stroke-dasharray="1.5 2.5"/>
+        <path d="M32 58 C36 60 40 64 44 70"/>
+      </g>
+    </symbol>
+    <symbol id="prop-thali" viewBox="0 0 120 120">
+      <circle cx="60" cy="64" r="50" style="fill:#E2B04A;stroke:#9C6B1E" stroke-width="2"/>
+      <circle cx="60" cy="64" r="44" style="fill:none;stroke:#F7E3A8" stroke-width="1.2" stroke-dasharray="2 3"/>
+      <circle cx="60" cy="64" r="16" style="fill:#C9973F;stroke:#8C6420" stroke-width="1.3"/><circle cx="60" cy="64" r="12.5" style="fill:#F4B400;stroke:#C98A00" stroke-width="1"/>
+      <path d="M54 62 C57 58 63 58 66 62" style="fill:none;stroke:#FFE27A" stroke-width="1.6"/>
+      <path d="M51.0 34.0 Q60.0 42.0 69.0 34.0 L67.0 30.0 H53.0 Z" style="fill:#D9733F;stroke:#8C3B1C" stroke-width="1"/><path d="M60.0 30.0 C56.0 25.0 58.0 20.0 60.0 16.0 C62.0 20.0 64.0 25.0 60.0 30.0Z" style="fill:#F28C28;stroke:#C0391B" stroke-width="1"/>
+      <circle cx="90.4" cy="54.1" r="9.5" style="fill:#C9973F;stroke:#8C6420" stroke-width="1.1"/><circle cx="90.4" cy="54.1" r="6.8" style="fill:#C0262D;stroke:#8E1B22" stroke-width=".9"/>
+      <circle cx="41.2" cy="89.9" r="9.5" style="fill:#C9973F;stroke:#8C6420" stroke-width="1.1"/><circle cx="41.2" cy="89.9" r="6.8" style="fill:#FFF6E0;stroke:#E7D6B2" stroke-width=".9"/><circle cx="38.2" cy="87.9" r=".9" style="fill:#D8C9A8;stroke:none"/><circle cx="43.2" cy="86.9" r=".9" style="fill:#D8C9A8;stroke:none"/><circle cx="44.2" cy="91.9" r=".9" style="fill:#D8C9A8;stroke:none"/><circle cx="39.2" cy="92.9" r=".9" style="fill:#D8C9A8;stroke:none"/><circle cx="41.2" cy="89.9" r=".9" style="fill:#D8C9A8;stroke:none"/>
+      <circle cx="78.8" cy="89.9" r="6.5" style="fill:#F7941D;stroke:#D2691E" stroke-width=".8"/><circle cx="78.8" cy="89.9" r="2.6" style="fill:#B8461B;stroke:none"/><circle cx="29.6" cy="54.1" r="6.5" style="fill:#F7941D;stroke:#D2691E" stroke-width=".8"/><circle cx="29.6" cy="54.1" r="2.6" style="fill:#B8461B;stroke:none"/>
+    </symbol>
+    <symbol id="prop-chori" viewBox="0 0 120 120">
+      <rect x="13.2" y="87.0" width="13.5" height="4" rx="1" style="fill:#D9B86A;stroke:#8C6420" stroke-width=".8"/><ellipse cx="20" cy="100" rx="15" ry="10" style="fill:#A0195E;stroke:#6E0F40" stroke-width="1"/><path d="M6 100 Q20 105.5 34 100" style="fill:none;stroke:#F7E3A8" stroke-width="1.6"/><circle cx="20" cy="96.5" r="1.3" style="fill:#FFF6E0;stroke:none"/><rect x="14.1" y="69.5" width="11.7" height="4" rx="1" style="fill:#D9B86A;stroke:#8C6420" stroke-width=".8"/><ellipse cx="20" cy="81" rx="13" ry="8.5" style="fill:#2E8B57;stroke:#6E0F40" stroke-width="1"/><path d="M8 81 Q20 85.7 32 81" style="fill:none;stroke:#F7E3A8" stroke-width="1.6"/><circle cx="20" cy="78.0" r="1.3" style="fill:#FFF6E0;stroke:none"/><rect x="15.1" y="53.5" width="9.9" height="4" rx="1" style="fill:#D9B86A;stroke:#8C6420" stroke-width=".8"/><ellipse cx="20" cy="64" rx="11" ry="7.5" style="fill:#F2B33D;stroke:#6E0F40" stroke-width="1"/><path d="M10 64 Q20 68.1 30 64" style="fill:none;stroke:#F7E3A8" stroke-width="1.6"/><circle cx="20" cy="61.4" r="1.3" style="fill:#FFF6E0;stroke:none"/><rect x="15.9" y="39.5" width="8.1" height="4" rx="1" style="fill:#D9B86A;stroke:#8C6420" stroke-width=".8"/><ellipse cx="20" cy="49" rx="9" ry="6.5" style="fill:#C2185B;stroke:#6E0F40" stroke-width="1"/><path d="M12 49 Q20 52.6 28 49" style="fill:none;stroke:#F7E3A8" stroke-width="1.6"/><circle cx="20" cy="46.7" r="1.3" style="fill:#FFF6E0;stroke:none"/><ellipse cx="20" cy="36" rx="5" ry="6" style="fill:#A97142;stroke:#6E4422" stroke-width="1"/><path d="M20 30 C14 24 11 24 9 26 M20 30 C26 24 29 24 31 26" style="fill:none;stroke:#4E7D2B" stroke-width="2"/><rect x="93.2" y="87.0" width="13.5" height="4" rx="1" style="fill:#D9B86A;stroke:#8C6420" stroke-width=".8"/><ellipse cx="100" cy="100" rx="15" ry="10" style="fill:#A0195E;stroke:#6E0F40" stroke-width="1"/><path d="M86 100 Q100 105.5 114 100" style="fill:none;stroke:#F7E3A8" stroke-width="1.6"/><circle cx="100" cy="96.5" r="1.3" style="fill:#FFF6E0;stroke:none"/><rect x="94.2" y="69.5" width="11.7" height="4" rx="1" style="fill:#D9B86A;stroke:#8C6420" stroke-width=".8"/><ellipse cx="100" cy="81" rx="13" ry="8.5" style="fill:#2E8B57;stroke:#6E0F40" stroke-width="1"/><path d="M88 81 Q100 85.7 112 81" style="fill:none;stroke:#F7E3A8" stroke-width="1.6"/><circle cx="100" cy="78.0" r="1.3" style="fill:#FFF6E0;stroke:none"/><rect x="95.0" y="53.5" width="9.9" height="4" rx="1" style="fill:#D9B86A;stroke:#8C6420" stroke-width=".8"/><ellipse cx="100" cy="64" rx="11" ry="7.5" style="fill:#F2B33D;stroke:#6E0F40" stroke-width="1"/><path d="M90 64 Q100 68.1 110 64" style="fill:none;stroke:#F7E3A8" stroke-width="1.6"/><circle cx="100" cy="61.4" r="1.3" style="fill:#FFF6E0;stroke:none"/><rect x="96.0" y="39.5" width="8.1" height="4" rx="1" style="fill:#D9B86A;stroke:#8C6420" stroke-width=".8"/><ellipse cx="100" cy="49" rx="9" ry="6.5" style="fill:#C2185B;stroke:#6E0F40" stroke-width="1"/><path d="M92 49 Q100 52.6 108 49" style="fill:none;stroke:#F7E3A8" stroke-width="1.6"/><circle cx="100" cy="46.7" r="1.3" style="fill:#FFF6E0;stroke:none"/><ellipse cx="100" cy="36" rx="5" ry="6" style="fill:#A97142;stroke:#6E4422" stroke-width="1"/><path d="M100 30 C94 24 91 24 89 26 M100 30 C106 24 109 24 111 26" style="fill:none;stroke:#4E7D2B" stroke-width="2"/>
+      <path d="M20 40 Q60 66 100 40" style="fill:none;stroke:#4E7D2B" stroke-width="1.2"/><circle cx="26.7" cy="44.0" r="2.6" style="fill:#F7941D;stroke:none"/><circle cx="33.3" cy="47.2" r="2.6" style="fill:#C2185B;stroke:none"/><circle cx="40.0" cy="49.8" r="2.6" style="fill:#F7941D;stroke:none"/><circle cx="46.7" cy="51.6" r="2.6" style="fill:#C2185B;stroke:none"/><circle cx="53.3" cy="52.6" r="2.6" style="fill:#F7941D;stroke:none"/><circle cx="60.0" cy="53.0" r="2.6" style="fill:#C2185B;stroke:none"/><circle cx="66.7" cy="52.6" r="2.6" style="fill:#F7941D;stroke:none"/><circle cx="73.3" cy="51.6" r="2.6" style="fill:#C2185B;stroke:none"/><circle cx="80.0" cy="49.8" r="2.6" style="fill:#F7941D;stroke:none"/><circle cx="86.7" cy="47.2" r="2.6" style="fill:#C2185B;stroke:none"/><circle cx="93.3" cy="44.0" r="2.6" style="fill:#F7941D;stroke:none"/>
+      <rect x="44" y="100" width="32" height="10" style="fill:#C8643B;stroke:#7A2E12" stroke-width="1.2"/>
+      <rect x="48" y="94" width="24" height="6" style="fill:#C8643B;stroke:#7A2E12" stroke-width="1.2"/>
+      <path d="M60 94 C48 86 52 74 60 64 C62 72 72 76 67 84 C73 82 72 90 69 94Z" style="fill:#F28C28;stroke:#C0391B" stroke-width="1.2"/>
+      <path d="M60 93 C56 88 57 82 60 77 C62 82 64 88 60 93Z" style="fill:#FFE27A;stroke:none"/>
+    </symbol>
     <symbol id="lotus" viewBox="0 0 64 32">
       <g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round">
         <path d="M32 4 C25 12 25 22 32 28 C39 22 39 12 32 4Z" fill="currentColor" fill-opacity=".18"/>
@@ -515,7 +612,7 @@
 </svg>
 
 <!-- Opening envelope -->
-<div id="envelope-screen" role="dialog" aria-label="Wedding invitation envelope">
+<div id="envelope-screen" role="dialog" aria-label="Wedding invitation">
   <div class="env-photo-wrap"><div class="env-photo temple-bg" role="img" aria-label="A Swaminarayan temple under a golden sunset sky"></div></div>
   <div class="first-look">
     <p class="font-deva text-lg sm:text-xl"><span class="inline-block">॥ श्री गणेशाय नमः ॥</span> <span class="inline-block">॥ जय स्वामिनारायण ॥</span></p>
@@ -524,25 +621,26 @@
     <div data-guest hidden class="guest-tag mt-5"><p class="gt-label">You are cordially invited</p><p class="guest-name gt-name film-gold"></p></div>
   </div>
   <div class="env" id="env">
+    <svg class="env-crest" aria-hidden="true"><use href="#lotus"/></svg>
     <div class="env-back"></div>
     <div class="env-card">
       <svg class="w-10 h-10 text-gold" aria-hidden="true"><use href="#ganesha"/></svg>
-      <p class="font-deva text-maroon text-xs sm:text-sm mt-1">॥ श्री गणेशाय नमः ॥ · ॥ जय स्वामिनारायण ॥</p>
+      <p class="font-deva text-maroon text-xs sm:text-sm mt-1 leading-snug"><span class="block">॥ श्री गणेशाय नमः ॥</span><span class="block">॥ जय स्वामिनारायण ॥</span></p>
       <p class="font-script text-maroon text-3xl sm:text-4xl mt-1 leading-tight"><span data-c="bride">Griva</span> &amp; <span data-c="groom">Himanshu</span></p>
     </div>
-    <div class="env-front"></div>
+    <div class="door door-l"></div>
+    <div class="door door-r"></div>
     <p data-guest hidden class="env-to"><span class="env-to-for">For</span><span class="guest-name"></span></p>
-    <div class="env-flap"></div>
     <button class="seal" id="seal" aria-label="Open the invitation"><span data-c="initials">G·H</span></button>
   </div>
-  <div class="text-center"><p class="env-hint">Tap the seal to open</p>
+  <div class="text-center"><p class="env-hint">Tap the seal to open the doors</p>
   <p class="italic text-[#C9C1B3] mt-1">Your invitation opens with music, so turn up your volume</p></div>
   <button class="skip" id="skip">Skip to invitation</button>
 </div>
 <div id="film" hidden aria-label="Invitation film">
   <div class="film-bg temple-bg" aria-hidden="true"></div>
   <canvas id="film-dust" aria-hidden="true"></canvas>
-  <div class="rays" aria-hidden="true"></div>
+  <div class="mandala" aria-hidden="true"></div>
   <div class="bar top"></div>
   <div class="bar bot"><button id="film-skip" type="button">Skip intro ›</button></div>
   <div class="shot"><svg class="film-emblem" aria-hidden="true"><use href="#ganesha"/></svg><p class="film-deva film-gold">॥ श्री गणेशाय नमः ॥</p><p class="film-cap">Shri Ganeshaya Namah</p></div>
@@ -708,13 +806,13 @@ const CONFIG = {
   weddingAt: '2027-01-24T18:30:00+05:30',   // countdown target: wedding, 6:30 PM IST
   // map = venue name Google Maps searches for. link = optional Google Maps share link (maps.app.goo.gl/...) that overrides it
   events: [
-    { name: 'Garba', time: 'Dinner from 6:00 PM · Garba at 7:00 PM', prop: 'garba', deva: 'ગરબા', date: 'Wednesday, 20 January 2027', place: 'Prayosha Park, Gana, Gujarat 388345',
+    { name: 'Garba', time: 'Dinner from 6:00 PM · Garba at 7:00 PM', prop: 'garbo', deva: 'ગરબા', date: 'Wednesday, 20 January 2027', place: 'Prayosha Park, Gana, Gujarat 388345',
       map: 'Prayosha Park, Gana, Gujarat 388345', link: '', note: 'An evening of dandiya, dhol and dancing in circles.' },
-    { name: 'Mehndi', time: '4:00 PM onwards · Dinner will follow', prop: 'mehndi', deva: 'મહેંદી', date: 'Thursday, 21 January 2027', place: 'Retro Bistro, Anand–Vidyanagar Road, Anand, Gujarat',
+    { name: 'Mehndi', time: '4:00 PM onwards · Dinner will follow', prop: 'hena', deva: 'મહેંદી', date: 'Thursday, 21 January 2027', place: 'Retro Bistro, Anand–Vidyanagar Road, Anand, Gujarat',
       map: 'Retro Bistro, Anand Vidyanagar Road, Anand, Gujarat', link: '', note: 'Henna, music and blessings for the couple.' },
-    { name: 'Haldi', time: '9:00 AM onwards · Lunch will follow', prop: 'haldi', deva: 'પીઠી', date: 'Sunday, 24 January 2027', place: 'Bhagwati Greens, Anand, Gujarat',
+    { name: 'Haldi', time: '9:00 AM onwards · Lunch will follow', prop: 'thali', deva: 'પીઠી', date: 'Sunday, 24 January 2027', place: 'Bhagwati Greens, Anand, Gujarat',
       map: 'Bhagwati Greens, Anand, Gujarat', link: '', note: 'Turmeric, marigolds and laughter with the family.' },
-    { name: 'Wedding · Pheras', time: '6:30 PM onwards · Dinner will follow', prop: 'phera', deva: 'લગ્ન', date: 'Sunday, 24 January 2027', place: 'Bhagwati Greens, Anand, Gujarat',
+    { name: 'Wedding · Pheras', time: '6:30 PM onwards · Dinner will follow', prop: 'chori', deva: 'લગ્ન', date: 'Sunday, 24 January 2027', place: 'Bhagwati Greens, Anand, Gujarat',
       map: 'Bhagwati Greens, Anand, Gujarat', link: '', note: 'Seven rounds around the sacred fire.' }
   ]
 };
@@ -958,6 +1056,18 @@ const Music = (() => {
 $('#seal').addEventListener('click', () => Music.play());
 $('#skip').addEventListener('click', () => Music.play());
 
+/* Film backdrop: a gold rangoli mandala, drawn once */
+(() => {
+  const rings = [[10, 30, 22], [16, 62, 26], [24, 98, 30], [32, 138, 26], [48, 172, 20]];
+  let d = '';
+  for (const [n, r, len] of rings) for (let i = 0; i < n; i++) {
+    const a = 360 / n * i, w = len * .42;
+    d += `<path transform="rotate(${a.toFixed(2)})" d="M0 ${-r} C${w} ${-(r + len * .35)} ${w * .6} ${-(r + len * .8)} 0 ${-(r + len)} C${-w * .6} ${-(r + len * .8)} ${-w} ${-(r + len * .35)} 0 ${-r}Z"/>`;
+  }
+  const circles = [26, 58, 94, 134, 168, 196].map((r, i) => `<circle r="${r}"${i % 2 ? ' stroke-dasharray="2 5"' : ''}/>`).join('');
+  $('.mandala').innerHTML = `<svg viewBox="-200 -200 400 400" fill="none" stroke="currentColor" stroke-width=".9">${circles}${d}</svg>`;
+})();
+
 /* Cinematic film intro */
 const Film = (() => {
   const el = $('#film'), shots = [...el.querySelectorAll('.shot')], dc = $('#film-dust'), dx = dc.getContext('2d');
@@ -965,14 +1075,16 @@ const Film = (() => {
   let timers = [], raf = 0, motes = [], fromEnvelope = false, active = false;
   function dust() {
     const w = dc.width = innerWidth, h = dc.height = innerHeight;
-    if (!motes.length) motes = Array.from({ length: 55 }, () => ({ x: Math.random() * w, y: Math.random() * h, r: 1 + Math.random() * 3.5, v: .15 + Math.random() * .5, a: .15 + Math.random() * .5, p: Math.random() * 6 }));
+    const cols = ['#E2477F', '#F48FB1', '#F2C14E', '#FFF1E6', '#D9B86A', '#C2185B'];
+    if (!motes.length) motes = Array.from({ length: 46 }, (_, i) => ({ x: Math.random() * w, y: Math.random() * h, r: 4 + Math.random() * 6, v: .5 + Math.random() * 1.1,
+      p: Math.random() * 6, rot: Math.random() * 6, vr: (Math.random() - .5) * .04, c: cols[i % cols.length] }));
     (function frame() {
       dx.clearRect(0, 0, w, h);
       for (const m of motes) {
-        m.y -= m.v; m.p += .015; if (m.y < -10) { m.y = h + 10; m.x = Math.random() * w; }
-        const r = m.r * 4, g = dx.createRadialGradient(m.x, m.y, 0, m.x, m.y, r), al = m.a * (.6 + .4 * Math.sin(m.p));
-        g.addColorStop(0, `rgba(247,222,160,${al})`); g.addColorStop(1, 'rgba(247,222,160,0)');
-        dx.fillStyle = g; dx.beginPath(); dx.arc(m.x + Math.sin(m.p) * 6, m.y, r, 0, 7); dx.fill();
+        m.y += m.v; m.p += .02; m.rot += m.vr; if (m.y > h + 20) { m.y = -20; m.x = Math.random() * w; }
+        dx.save(); dx.translate(m.x + Math.sin(m.p) * 18, m.y); dx.rotate(m.rot); dx.scale(Math.cos(m.p * 1.3), 1);
+        dx.globalAlpha = .75; dx.fillStyle = m.c; dx.beginPath();
+        dx.moveTo(0, -m.r); dx.quadraticCurveTo(m.r * .9, 0, 0, m.r); dx.quadraticCurveTo(-m.r * .9, 0, 0, -m.r); dx.fill(); dx.restore();
       }
       raf = requestAnimationFrame(frame);
     })();
