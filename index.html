@@ -383,14 +383,14 @@
   .env-card .font-script { font-size: clamp(1.35rem, 6.4vw, 1.9rem); }
   .env.lift .env-card { transform: scale(1.05); }
   .door { position: absolute; top: 0; bottom: 0; width: 50%; z-index: 4; transition: transform 1.4s cubic-bezier(.55,.05,.25,1);
-    background: radial-gradient(circle, rgba(240,213,143,.5) 0 1px, transparent 1.6px) 0 0 / 11px 11px, linear-gradient(165deg, #B5236E, var(--maroon) 55%, #84154D);
-    box-shadow: inset 0 0 0 2px var(--gold-light), inset 0 0 0 6px #84154D, inset 0 0 0 7px rgba(217,184,106,.75); }
-  .door::before, .door::after { content: ""; position: absolute; left: 20%; right: 20%; border: 1px solid rgba(217,184,106,.8); box-shadow: inset 0 0 0 3px rgba(110,15,64,.35); }
+    background: radial-gradient(circle, rgba(240,213,143,.5) 0 1px, transparent 1.6px) 0 0 / 11px 11px, linear-gradient(165deg, #1C6E68, var(--navy) 55%, #0A302E);
+    box-shadow: inset 0 0 0 2px var(--gold-light), inset 0 0 0 6px #0A302E, inset 0 0 0 7px rgba(217,184,106,.75); }
+  .door::before, .door::after { content: ""; position: absolute; left: 20%; right: 20%; border: 1px solid rgba(217,184,106,.8); box-shadow: inset 0 0 0 3px rgba(7,38,36,.4); }
   .door::before { top: 30%; height: 30%; border-radius: 50% 50% 2px 2px / 28% 28% 2px 2px; }
   .door::after { top: 66%; bottom: 9%; border-radius: 2px; }
   .door-l { left: 0; transform-origin: left center; border-radius: 100% 0 0 4px / 34% 0 0 4px; }
   .door-r { right: 0; transform-origin: right center; border-radius: 0 100% 4px 0 / 0 34% 4px 0; }
-  .door-l { box-shadow: inset 0 0 0 2px var(--gold-light), inset 0 0 0 6px #84154D, inset 0 0 0 7px rgba(217,184,106,.75), inset -6px 0 10px -4px rgba(0,0,0,.45); }
+  .door-l { box-shadow: inset 0 0 0 2px var(--gold-light), inset 0 0 0 6px #0A302E, inset 0 0 0 7px rgba(217,184,106,.75), inset -6px 0 10px -4px rgba(0,0,0,.45); }
   .env.open .door-l { transform: rotateY(-108deg); }
   .env.open .door-r { transform: rotateY(108deg); }
   .seal { top: 56%; transition: transform .7s ease, opacity .6s ease; }
