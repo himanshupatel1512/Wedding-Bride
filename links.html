@@ -37,6 +37,8 @@
   .name { font-family: var(--f-display); font-size: 1.05rem; }
   .url { font-size: .85rem; color: var(--ink); word-break: break-all; user-select: all; }
   .row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .mehndi { display: flex; align-items: center; gap: 10px; font-family: var(--f-body); font-size: 1.05rem; text-transform: none; letter-spacing: 0; margin: 0; color: var(--maroon); cursor: pointer; padding: 4px 0; }
+  .mehndi input { width: 22px; height: 22px; accent-color: var(--maroon); }
   .hint { color: var(--ink); font-size: 1rem; }
   .empty { color: var(--ink); font-style: italic; text-align: center; padding: 20px; border: 1px dashed rgba(180,138,60,.6); }
 </style>
@@ -46,7 +48,7 @@
   <header>
     <p class="eyebrow">Griva &amp; Himanshu · for the family only</p>
     <h1>Guest invitation links</h1>
-    <p class="hint" style="margin-top:6px">Type one guest per line. Each guest gets a link that opens the invitation with their name on it.</p>
+    <p class="hint" style="margin-top:6px">Type one guest per line. Each guest gets a link that opens the invitation with their name on it. Tick “Invite to Mehndi too” for guests who should also see the Mehndi; everyone else sees Garba, Haldi and the Wedding.</p>
   </header>
 
   <section class="card">
@@ -70,7 +72,10 @@
   const load = k => { try { return localStorage.getItem(k); } catch (_) { return null; } };
   names.value = load('guest-names') || '';
   msg.value = load('guest-msg') || DEFAULT_MSG;
-  const linkFor = n => BASE + '?to=' + encodeURIComponent(n).replace(/%20/g, '+');
+  // m=1 adds the Mehndi card; it goes before the name so it survives apps that re-encode the name
+  const linkFor = (n, m) => BASE + '?' + (m ? 'm=1&' : '') + 'to=' + encodeURIComponent(n).replace(/%20/g, '+');
+  const mehndi = new Set(JSON.parse(load('guest-mehndi') || '[]'));
+  const saveMehndi = () => save('guest-mehndi', JSON.stringify([...mehndi]));
   let links = [];
 
   function legacyCopy(text) {
@@ -87,15 +92,18 @@
   function render() {
     const people = [...new Set(names.value.split('\n').map(s => s.replace(/\s+/g, ' ').trim()).filter(Boolean))];
     save('guest-names', names.value); save('guest-msg', msg.value);
-    links = people.map(n => ({ n, url: linkFor(n) }));
+    links = people.map(n => ({ n, m: mehndi.has(n), url: linkFor(n, mehndi.has(n)) }));
     list.innerHTML = '';
     $('#empty').hidden = links.length > 0;
-    links.forEach(({ n, url }) => {
+    links.forEach(({ n, m, url }) => {
       const li = document.createElement('li');
       const text = msg.value.split('{name}').join(n).split('{link}').join(url);
-      li.innerHTML = `<span class="name"></span><span class="url"></span>
+      li.innerHTML = `<span class="name"></span><label class="mehndi"><input type="checkbox"> Invite to Mehndi too</label><span class="url"></span>
         <div class="row"><a class="btn wa" target="_blank" rel="noopener">Send on WhatsApp</a><button class="btn copy" type="button">Copy link</button><button class="btn share" type="button" hidden>Share…</button><a class="btn pv" target="_blank" rel="noopener">Preview</a></div>`;
       li.querySelector('.name').textContent = n;
+      const tick = li.querySelector('.mehndi input');
+      tick.checked = m;
+      tick.addEventListener('change', () => { tick.checked ? mehndi.add(n) : mehndi.delete(n); saveMehndi(); render(); });
       li.querySelector('.url').textContent = url;
       li.querySelector('a.wa').href = 'https://wa.me/?text=' + encodeURIComponent(text);
       li.querySelector('a.pv').href = url;
@@ -105,12 +113,13 @@
       cb.addEventListener('click', () => copy(url, t => { cb.textContent = t; setTimeout(() => cb.textContent = 'Copy link', 1800); }));
       list.appendChild(li);
     });
-    $('#status').textContent = links.length ? `${links.length} link${links.length > 1 ? 's' : ''} ready.` : 'Add at least one name first.';
+    const mc = links.filter(l => l.m).length;
+    $('#status').textContent = links.length ? `${links.length} link${links.length > 1 ? 's' : ''} ready · ${mc} invited to Mehndi.` : 'Add at least one name first.';
   }
   $('#make').addEventListener('click', render);
   $('#copy-all').addEventListener('click', () => {
     if (!links.length) render();
-    copy(links.map(l => `${l.n}: ${l.url}`).join('\n'), t => $('#status').textContent = t === 'Copied' ? 'All links copied.' : t);
+    copy(links.map(l => `${l.n}${l.m ? ' (Mehndi)' : ''}: ${l.url}`).join('\n'), t => $('#status').textContent = t === 'Copied' ? 'All links copied.' : t);
   });
   if (names.value.trim()) render();
 </script>

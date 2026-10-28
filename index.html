@@ -743,7 +743,7 @@
       <div class="text-center">
         <p class="eyebrow">Utsav</p>
         <h2 id="events-h" class="font-display text-2xl sm:text-3xl text-navy mt-2">Wedding festivities</h2>
-        <p class="text-ink mt-2">A week of garba, mehndi, haldi and sacred rituals in Anand, Gujarat.</p>
+        <p class="text-ink mt-2" id="events-intro">A week of garba, mehndi, haldi and sacred rituals in Anand, Gujarat.</p>
       </div>
       <div id="event-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-8"></div>
     </div>
@@ -807,11 +807,12 @@ const CONFIG = {
   family: 'The Patel Family', hashtag: '#GrivaWedsHimanshu',
   songUrl: '',   // optional: a song file URL (e.g. 'song.mp3'). Empty = the song embedded at the end of this file
   weddingAt: '2027-01-24T18:30:00+05:30',   // countdown target: wedding, 6:30 PM IST
+  // only: 'm' = shown only to guests whose link has m=1 (the Mehndi tick in links.html)
   // map = venue name Google Maps searches for. link = optional Google Maps share link (maps.app.goo.gl/...) that overrides it
   events: [
     { name: 'Garba', time: 'Dinner from 6:00 PM · Garba at 7:00 PM', prop: 'garbo', deva: 'ગરબા', date: 'Wednesday, 20 January 2027', place: 'Prayosha Park, Gana, Gujarat 388345',
       map: 'Prayosha Park, Gana, Gujarat 388345', link: '', note: 'An evening of dandiya, dhol and dancing in circles.' },
-    { name: 'Mehndi', time: '4:00 PM onwards · Dinner will follow', prop: 'hena', deva: 'મહેંદી', date: 'Thursday, 21 January 2027', place: 'Retro Bistro, Anand–Vidyanagar Road, Anand, Gujarat',
+    { name: 'Mehndi', only: 'm', time: '4:00 PM onwards · Dinner will follow', prop: 'hena', deva: 'મહેંદી', date: 'Thursday, 21 January 2027', place: 'Retro Bistro, Anand–Vidyanagar Road, Anand, Gujarat',
       map: 'Retro Bistro, Anand Vidyanagar Road, Anand, Gujarat', link: '', note: 'Henna, music and blessings for the couple.' },
     { name: 'Haldi', time: '9:00 AM onwards · Lunch will follow', prop: 'thali', deva: 'પીઠી', date: 'Sunday, 24 January 2027', place: 'Bhagwati Greens, Anand, Gujarat',
       map: 'Bhagwati Greens, Anand, Gujarat', link: '', note: 'Turmeric, marigolds and laughter with the family.' },
@@ -847,7 +848,11 @@ document.querySelectorAll('[data-c]').forEach(el => { const v = CONFIG[el.datase
 
 /* Events */
 const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-$('#event-list').innerHTML = CONFIG.events.map(e => `
+/* Invite-only events (Mehndi): shown when the guest's link carries m=1 */
+const invitedTo = (() => { try { const q = new URLSearchParams(location.search); return { m: q.get('m') === '1' }; } catch (_) { return {}; } })();
+const shownEvents = CONFIG.events.filter(e => !e.only || invitedTo[e.only]);
+if (!invitedTo.m) $('#events-intro').textContent = 'Garba, haldi and sacred rituals in Anand, Gujarat.';
+$('#event-list').innerHTML = shownEvents.map(e => `
   <article class="event relative p-6 sm:p-7 min-w-0 flex flex-col">
     ${e.prop ? `<svg class="ev-prop" aria-hidden="true"><use href="#prop-${e.prop}"/></svg>` : ''}
     <div class="flex items-baseline justify-between gap-3 flex-wrap">
