@@ -373,34 +373,36 @@
 
   #fx { position: fixed; inset: 0; pointer-events: none; z-index: 55; }
 
-  /* Bride side: a closed lotus that blooms open, and the invitation rises from its heart */
-  .env { width: min(72vw, 300px); aspect-ratio: 320 / 260; perspective: none; }
-  .env-back { inset: auto -10% -6%; height: 70%; border-radius: 50%; z-index: 0;
-    background: radial-gradient(ellipse at 50% 72%, rgba(255,214,130,.55) 0%, rgba(217,184,106,.18) 38%, transparent 62%),
-      repeating-radial-gradient(ellipse at 50% 92%, transparent 0 10px, rgba(217,184,106,.28) 10px 11px, transparent 11px 20px);
-    -webkit-mask: radial-gradient(ellipse at 50% 80%, #000 30%, transparent 70%); mask: radial-gradient(ellipse at 50% 80%, #000 30%, transparent 70%);
-    transition: opacity 1.2s ease, transform 1.6s ease; }
-  .env.open .env-back { transform: scale(1.25); }
-  .bloom { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; z-index: 2; transform-origin: 50% 85%;
-    filter: drop-shadow(0 10px 18px rgba(0,0,0,.45)); animation: bud 3.4s ease-in-out infinite; }
-  @keyframes bud { 50% { transform: scale(1.03); } }
-  .env.open .bloom { animation: none; filter: drop-shadow(0 0 26px rgba(255,214,130,.55)); }
-  .petal { transform-box: view-box; transform-origin: 160px 222px; transform: rotate(var(--c)); transition: transform 1.4s cubic-bezier(.3,.7,.2,1) var(--d); }
-  .env.open .petal { transform: rotate(var(--o)); }
-  .env-card { left: 50%; right: auto; top: 2%; bottom: auto; height: auto; width: 56%; aspect-ratio: 1; padding: 0 7%; z-index: 3; border-radius: 50%; justify-content: center; outline-offset: -7px;
-    box-shadow: 0 0 0 3px rgba(217,184,106,.35), 0 0 40px 8px rgba(255,214,130,.5); opacity: 0; transform: translate(-50%, 55%) scale(.25);
-    transition: transform 1.2s cubic-bezier(.2,.8,.2,1), opacity .8s ease; }
-  .env-card .font-deva { display: none; }
-  .env-card .font-script { font-size: clamp(1.15rem, 5.4vw, 1.6rem); }
-  .env.lift .env-card { opacity: 1; transform: translate(-50%, 0) scale(1); }
-  .seal, .env.has-guest .seal { top: 52%; z-index: 4; transition: transform .6s ease, opacity .5s ease; }
-  .env.open .seal { transform: translate(-50%, -50%) scale(.2); }
-  .env-to { z-index: 4; bottom: -14%; transition: opacity .5s ease; }
+  /* Bride side: a rolled kankotri tied with red thread; the seal breaks and it unrolls to show the card */
+  .env { width: min(60vw, 230px); aspect-ratio: 190 / 280; perspective: none; }
+  .rod { position: absolute; left: 0; right: 0; top: 14px; height: 12px; border-radius: 6px; z-index: 2;
+    background: linear-gradient(180deg, #F0D58F, var(--gold) 50%, #7A5A1E); box-shadow: 0 3px 6px rgba(0,0,0,.4); }
+  .rod::before, .rod::after { content: ""; position: absolute; top: -3px; width: 12px; height: 18px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #F7E3A8, #8C6420); }
+  .rod::before { left: -6px; } .rod::after { right: -6px; }
+  .paper { position: absolute; left: 6%; right: 6%; top: 22px; height: 0; overflow: hidden; z-index: 1;
+    background: linear-gradient(90deg, #EADBB8, #FBF3E2 15%, #FBF3E2 85%, #EADBB8); box-shadow: inset 0 6px 8px -6px rgba(0,0,0,.35);
+    transition: height 1.7s cubic-bezier(.45,.05,.25,1) .45s; }
+  .env.open .paper { height: calc(100% - 46px); }
+  .env-card { left: 7%; right: 7%; top: 12px; bottom: auto; width: auto; height: auto; aspect-ratio: auto; padding: 14% 4% 10%; background: transparent; border-color: rgba(180,138,60,.7);
+    outline: none; border-radius: 50% 50% 3px 3px / 20% 20% 3px 3px; opacity: 1; transform: none; box-shadow: none; transition: none; justify-content: flex-start; }
+  .env-card .font-deva { display: block; font-size: clamp(.55rem, 2.6vw, .72rem); }
+  .env-card .font-script { font-size: clamp(1.2rem, 5.6vw, 1.7rem); }
+  .env-date { font-family: var(--f-display); font-size: .58rem; letter-spacing: .24em; color: var(--gold); margin: 6px 0 0; }
+  .roll { position: absolute; left: 3%; right: 3%; top: 20px; height: 40px; border-radius: 18px; z-index: 3;
+    background: linear-gradient(180deg, #CDB487, #FBF3E2 35%, #F3E3BE 60%, #B9A06E); box-shadow: 0 10px 18px -6px rgba(0,0,0,.6);
+    transition: top 1.7s cubic-bezier(.45,.05,.25,1) .45s, height 1.7s ease .45s; }
+  .roll::before { content: ""; position: absolute; left: -2px; right: -2px; top: 50%; height: 6px; transform: translateY(-50%); background: linear-gradient(180deg, #F0D58F, #8C6420); border-radius: 3px; }
+  .env.open .roll { top: calc(100% - 32px); height: 30px; }
+  .thread { position: absolute; left: calc(50% - 3px); top: 12px; width: 6px; height: 56px; z-index: 4; border-radius: 3px;
+    background: repeating-linear-gradient(45deg, #C0262D 0 3px, #8E1B22 3px 6px); transition: opacity .4s ease; }
+  .env.open .thread { opacity: 0; }
+  .seal, .env.has-guest .seal { top: 40px; z-index: 5; transition: transform .5s ease, opacity .5s ease; }
+  .env.open .seal { transform: translate(-50%, -50%) rotate(30deg) scale(.2); }
+  .env-to { z-index: 4; top: 84px; bottom: auto; font-size: clamp(1.15rem, 5.4vw, 1.6rem); transition: opacity .4s ease; }
   .env.open .env-to { opacity: 0; }
-  .env.has-guest { margin-bottom: 8%; }
-  @media (max-height: 700px) { .env { width: min(60vw, 250px); } }
-  @media (max-height: 480px) { .env { width: 150px; } .env-to { display: none; } .env.has-guest { margin-bottom: 0; } .seal { width: 46px; height: 46px; font-size: .85rem; }
-    .env-card .font-script { font-size: .8rem; } .env-card svg { width: 1.4rem; height: 1.4rem; } }
+  @media (max-height: 700px) { .env { width: min(52vw, 200px); } }
+  @media (max-height: 480px) { .env { width: 112px; } .env-to { display: none; } .seal { width: 46px; height: 46px; font-size: .85rem; }
+    .env-card { padding-top: 8%; } .env-card svg, .env-card .font-deva { display: none; } .env-card .font-script { font-size: .85rem; } .env-date { font-size: .45rem; } }
 
   /* Bride side film: scenes open through a widening circle, petals fall, a rangoli turns behind */
   .mandala { position: absolute; left: 50%; top: 46%; width: min(135vmin, 960px); aspect-ratio: 1; transform: translate(-50%, -50%); color: rgba(217,184,106,.55); pointer-events: none; opacity: 0;
@@ -620,24 +622,21 @@
     <div data-guest hidden class="guest-tag mt-5"><p class="gt-label">You are cordially invited</p><p class="guest-name gt-name film-gold"></p></div>
   </div>
   <div class="env" id="env">
-    <div class="env-back"></div>
-    <svg class="bloom" viewBox="0 0 320 260" aria-hidden="true">
-      <defs>
-        <linearGradient id="lp-a" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#7E0F45"/><stop offset=".55" stop-color="#C2185B"/><stop offset="1" stop-color="#F48FB1"/></linearGradient>
-        <linearGradient id="lp-b" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#A0195E"/><stop offset=".6" stop-color="#E2477F"/><stop offset="1" stop-color="#FCE4EC"/></linearGradient>
-        <linearGradient id="lp-c" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#8E1450"/><stop offset=".5" stop-color="#D81B60"/><stop offset="1" stop-color="#F8BBD0"/></linearGradient>
-      </defs>
-      <g class="petal" style="--c:-26deg;--o:-80deg;--d:120ms"><g transform="translate(160 222)"><path d="M0 0 C46 -52 37 -131 0 -175 C-37 -131 -46 -52 0 0Z" fill="url(#lp-a)" stroke="#E6C77E" stroke-width="1.3"/><path d="M0 -8 V-144" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1"/></g></g><g class="petal" style="--c:26deg;--o:80deg;--d:120ms"><g transform="translate(160 222)"><path d="M0 0 C46 -52 37 -131 0 -175 C-37 -131 -46 -52 0 0Z" fill="url(#lp-a)" stroke="#E6C77E" stroke-width="1.3"/><path d="M0 -8 V-144" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1"/></g></g><g class="petal" style="--c:-13deg;--o:-42deg;--d:200ms"><g transform="translate(160 222)"><path d="M0 0 C46 -52 37 -131 0 -175 C-37 -131 -46 -52 0 0Z" fill="url(#lp-a)" stroke="#E6C77E" stroke-width="1.3"/><path d="M0 -8 V-144" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1"/></g></g><g class="petal" style="--c:13deg;--o:42deg;--d:200ms"><g transform="translate(160 222)"><path d="M0 0 C46 -52 37 -131 0 -175 C-37 -131 -46 -52 0 0Z" fill="url(#lp-a)" stroke="#E6C77E" stroke-width="1.3"/><path d="M0 -8 V-144" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1"/></g></g><g class="petal" style="--c:0deg;--o:0deg;--d:0ms"><g transform="translate(160 222)"><path d="M0 0 C46 -52 37 -131 0 -175 C-37 -131 -46 -52 0 0Z" fill="url(#lp-a)" stroke="#E6C77E" stroke-width="1.3"/><path d="M0 -8 V-144" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1"/></g></g><g class="petal" style="--c:-17deg;--o:-60deg;--d:260ms"><g transform="translate(160 222)"><path d="M0 0 C42 -47 34 -118 0 -158 C-34 -118 -42 -47 0 0Z" fill="url(#lp-b)" stroke="#E6C77E" stroke-width="1.3"/><path d="M0 -8 V-130" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1"/></g></g><g class="petal" style="--c:17deg;--o:60deg;--d:260ms"><g transform="translate(160 222)"><path d="M0 0 C42 -47 34 -118 0 -158 C-34 -118 -42 -47 0 0Z" fill="url(#lp-b)" stroke="#E6C77E" stroke-width="1.3"/><path d="M0 -8 V-130" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1"/></g></g><g class="petal" style="--c:-6deg;--o:-20deg;--d:340ms"><g transform="translate(160 222)"><path d="M0 0 C42 -47 34 -118 0 -158 C-34 -118 -42 -47 0 0Z" fill="url(#lp-b)" stroke="#E6C77E" stroke-width="1.3"/><path d="M0 -8 V-130" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1"/></g></g><g class="petal" style="--c:6deg;--o:20deg;--d:340ms"><g transform="translate(160 222)"><path d="M0 0 C42 -47 34 -118 0 -158 C-34 -118 -42 -47 0 0Z" fill="url(#lp-b)" stroke="#E6C77E" stroke-width="1.3"/><path d="M0 -8 V-130" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1"/></g></g><g class="petal" style="--c:-11deg;--o:-96deg;--d:0ms"><g transform="translate(160 222)"><path d="M0 0 C54 -44 43 -111 0 -148 C-43 -111 -54 -44 0 0Z" fill="url(#lp-c)" stroke="#E6C77E" stroke-width="1.3"/><path d="M0 -8 V-121" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1"/></g></g><g class="petal" style="--c:11deg;--o:96deg;--d:0ms"><g transform="translate(160 222)"><path d="M0 0 C54 -44 43 -111 0 -148 C-43 -111 -54 -44 0 0Z" fill="url(#lp-c)" stroke="#E6C77E" stroke-width="1.3"/><path d="M0 -8 V-121" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1"/></g></g>
-    </svg>
+    <div class="rod"></div>
+    <div class="paper">
     <div class="env-card">
       <svg class="w-10 h-10 text-gold" aria-hidden="true"><use href="#ganesha"/></svg>
       <p class="font-deva text-maroon text-xs sm:text-sm mt-1 leading-snug"><span class="block">॥ श्री गणेशाय नमः ॥</span><span class="block">॥ जय स्वामिनारायण ॥</span></p>
       <p class="font-script text-maroon text-3xl sm:text-4xl mt-1 leading-tight"><span data-c="bride">Griva</span> &amp; <span data-c="groom">Himanshu</span></p>
+      <p class="env-date">24 · 01 · 2027</p>
     </div>
+    </div>
+    <div class="roll"></div>
+    <div class="thread"></div>
     <p data-guest hidden class="env-to"><span class="env-to-for">For</span><span class="guest-name"></span></p>
     <button class="seal" id="seal" aria-label="Open the invitation"><span data-c="initials">G·H</span></button>
   </div>
-  <div class="text-center"><p class="env-hint">Tap the lotus to open</p>
+  <div class="text-center"><p class="env-hint">Tap the seal to unroll</p>
   <p class="italic text-[#C9C1B3] mt-1">Your invitation opens with music, so turn up your volume</p></div>
   <button class="skip" id="skip">Skip to invitation</button>
 </div>
@@ -939,7 +938,7 @@ function openEnvelope() {
   if (reduceMotion) { reveal(); return; }
   env.classList.add('open');
   setTimeout(() => env.classList.add('lift'), 850);
-  setTimeout(() => playFilm(true), 2100);
+  setTimeout(() => playFilm(true), 3000);   // the scroll unrolls first, then the film
 }
 $('#seal').addEventListener('click', openEnvelope);
 setTimeout(openEnvelope, 6000);   // opens on its own after 6 seconds; music then starts on the first touch
